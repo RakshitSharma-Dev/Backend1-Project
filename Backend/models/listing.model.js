@@ -26,6 +26,12 @@ const listingSchema = new Schema({
             set: (v) => v === "" ? "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2" : v,
         }
     },
+    images: [
+        {
+            url: String,
+            filename: String,
+        }
+    ],
     price: {
         type: Number,
         required: [true, "Price is required"],
@@ -43,6 +49,30 @@ const listingSchema = new Schema({
         required: [true, "Country is required"],
         trim: true,
         maxLength: [60, "Country must not exceed 60 characters"],
+    },
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            default: 'Point',
+        },
+        coordinates: {
+            type: [Number],
+            default: [0, 0],
+        }
+    },
+    isAvailable: {
+        type: Boolean,
+        default: true,
+    },
+    isPublished: {
+        type: Boolean,
+        default: true,
+    },
+    listingStatus: {
+        type: String,
+        enum: ['active', 'unavailable', 'unpublished'],
+        default: 'active',
     },
     reviews: [
         {

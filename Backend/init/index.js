@@ -5,7 +5,7 @@ import { data } from "./data.js";
 const MONGO_URL = "mongodb://127.0.0.1:27017/Hostly";
 
 const initDB = async () => {
-    await Listing.deleteMany({}); //deleting sample data if it exists
+    await Listing.deleteMany({});
     await Listing.insertMany(data);
     console.log("Data was Inserted successfully");
 }
@@ -13,7 +13,7 @@ const initDB = async () => {
 const connectDB = async () => {
     try {
         await mongoose.connect(MONGO_URL);
-        await initDB(); //calling the initDB after the successfull connection with Database;
+        await initDB();
         console.log("DB is connected");
     } catch (err) {
         console.log("Error occured", err);

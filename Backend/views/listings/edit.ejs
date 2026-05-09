@@ -5,7 +5,8 @@
             <h2 class="form-title">Edit Your Listing</h2>
             <p class="form-subtitle">Update the details below to modify your property</p>
 
-            <form method="POST" action="/listing/<%=getListing._id%>?_method=PUT" class="needs-validation" novalidate>
+            <form method="POST" action="/listing/<%=getListing._id%>?_method=PUT" enctype="multipart/form-data"
+                class="needs-validation" novalidate>
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
@@ -23,46 +24,83 @@
                     <div class="invalid-feedback">Please provide a meaningful description.</div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="image" class="form-label">Image URL</label>
-                    <input type="url" id="image" value="<%=getListing.image.url%>" name="listing[image][url]"
-                        placeholder="Enter image URL (optional)" class="form-control">
-                    <div class="valid-feedback">Image URL is valid!</div>
-                    <div class="invalid-feedback">Please enter a valid image URL (e.g. https://example.com/image.jpg).
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="mb-3 col-md-4">
-                        <label for="price" class="form-label">Price per Night</label>
-                        <div class="input-group has-validation">
-                            <span class="input-group-text">₹</span>
-                            <input type="number" id="price" value="<%=getListing.price%>" name="listing[price]"
-                                placeholder="0" class="form-control" min="0" max="1000000" required>
-                            <div class="valid-feedback">Price looks good!</div>
-                            <div class="invalid-feedback">Price is required and must be between ₹0 and ₹10,00,000.</div>
+                <% if(getListing.images && getListing.images.length> 0) { %>
+                    <div class="mb-3">
+                        <label class="form-label">Current Images</label>
+                        <div class="current-images-wrapper">
+                            <% for(let img of getListing.images) { %>
+                                <div class="current-image-item">
+                                    <img src="<%= img.url %>" class="current-image-preview">
+                                    <div class="form-check mt-1">
+                                        <input class="form-check-input" type="checkbox" name="deleteImages[]"
+                                            value="<%= img.filename %>" id="del_<%= img.filename %>">
+                                        <label class="form-check-label text-danger" for="del_<%= img.filename %>">
+                                            Delete
+                                        </label>
+                                    </div>
+                                </div>
+                                <% } %>
                         </div>
                     </div>
+                    <% } %>
 
-                    <div class="mb-3 col-md-8">
-                        <label for="country" class="form-label">Country</label>
-                        <input type="text" id="country" value="<%=getListing.country%>" name="listing[country]"
-                            placeholder="Enter country" class="form-control" pattern=".*\S.*" required>
-                        <div class="valid-feedback">Country looks good!</div>
-                        <div class="invalid-feedback">Country name is required and cannot be blank.</div>
-                    </div>
-                </div>
+                        <div class="mb-3">
+                            <label for="images" class="form-label">Add New Images (up to 5)</label>
+                            <input type="file" id="images" name="listing[images]" class="form-control"
+                                accept="image/jpeg,image/png,image/webp" multiple>
+                            <div id="imagePreview" class="image-preview-wrapper mt-2"></div>
+                        </div>
 
-                <div class="mb-3">
-                    <label for="location" class="form-label">Location</label>
-                    <input type="text" id="location" value="<%=getListing.location%>" name="listing[location]"
-                        placeholder="Enter location" class="form-control" pattern=".*\S.*" required>
-                    <div class="valid-feedback">Location looks good!</div>
-                    <div class="invalid-feedback">Location is required and cannot be blank.</div>
-                </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-4">
+                                <label for="price" class="form-label">Price per Night</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text">₹</span>
+                                    <input type="number" id="price" value="<%=getListing.price%>" name="listing[price]"
+                                        placeholder="0" class="form-control" min="0" max="1000000" required>
+                                    <div class="valid-feedback">Price looks good!</div>
+                                    <div class="invalid-feedback">Price is required and must be between ₹0 and
+                                        ₹10,00,000.</div>
+                                </div>
+                            </div>
 
-                <button class="form-submit-btn">Save Changes</button>
+                            <div class="mb-3 col-md-8">
+                                <label for="country" class="form-label">Country</label>
+                                <input type="text" id="country" value="<%=getListing.country%>" name="listing[country]"
+                                    placeholder="Enter country" class="form-control" pattern=".*\S.*" required>
+                                <div class="valid-feedback">Country looks good!</div>
+                                <div class="invalid-feedback">Country name is required and cannot be blank.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" id="location" value="<%=getListing.location%>" name="listing[location]"
+                                placeholder="Enter location" class="form-control" pattern=".*\S.*" required>
+                            <div class="valid-feedback">Location looks good!</div>
+                            <div class="invalid-feedback">Location is required and cannot be blank.</div>
+                        </div>
+
+                        <button class="form-submit-btn">Save Changes</button>
 
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('images').addEventListener('change', function () {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            const files = Array.from(this.files).slice(0, 5);
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('preview-img');
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>

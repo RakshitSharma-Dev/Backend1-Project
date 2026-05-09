@@ -5,7 +5,7 @@
             <h2 class="form-title">Create a New Listing</h2>
             <p class="form-subtitle">Fill in the details below to add your property</p>
 
-            <form action="/listing" method="POST" class="needs-validation" novalidate>
+            <form action="/listing" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
@@ -24,11 +24,11 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="image" class="form-label">Image URL</label>
-                    <input type="url" id="image" name="listing[image][url]" placeholder="Enter image URL (optional)"
-                        class="form-control">
-                    <div class="valid-feedback">Looks good!</div>
-                    <div class="invalid-feedback">Please enter a valid URL (e.g. https://example.com/image.jpg).</div>
+                    <label for="images" class="form-label">Images (up to 5)</label>
+                    <input type="file" id="images" name="listing[images]" class="form-control"
+                        accept="image/jpeg,image/png,image/webp" multiple>
+                    <div class="form-text">Upload up to 5 images. If no image is uploaded, a default will be used.</div>
+                    <div id="imagePreview" class="image-preview-wrapper mt-2"></div>
                 </div>
 
                 <div class="row">
@@ -65,3 +65,21 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('images').addEventListener('change', function () {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            const files = Array.from(this.files).slice(0, 5);
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('preview-img');
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
