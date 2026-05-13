@@ -1,0 +1,117 @@
+/* --- Profile Layout & Header --- */
+.profile-page {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.profile-wrapper {
+    width: 100%;
+    max-width: 720px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem 0;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fe424d 0%, #ff5a5f 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(254, 66, 77, 0.25);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(254, 66, 77, 0.35);
+}
+
+/* --- User Info --- */
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 0.3rem 0;
+    letter-spacing: -0.5px;
+}
+
+.profile-username, .profile-since {
+    font-size: 0.95rem;
+    color: #888;
+    transition: color 0.3s ease;
+}
+
+.profile-email {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 0.5rem 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-email i, .profile-since i {
+    color: #fe424d;
+}
+
+.profile-divider {
+    border-top: 1px solid #ebebeb;
+    margin: 2rem 0;
+    transition: border-color 0.3s ease;
+}
+
+/* --- Actions & States --- */
+.profile-logout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1.5rem;
+    background-color: #fff;
+    color: #222;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.profile-logout-btn:hover {
+    background-color: #222;
+    color: #fff;
+    border-color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.profile-empty {
+    font-size: 0.95rem;
+    color: #888;
+    animation: slideInUp 0.5s ease-out;
+}
+
+.profile-empty a {
+    color: #fe424d;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.profile-empty a:hover {
+    transform: translateX(2px);
+}

@@ -1,0 +1,23 @@
+/* footer.css */
+.f-info {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f5f5 0%, #ebebeb 100%);
+    border-top: 1px solid #ddd;
+    transition: all 0.3s ease;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.f-info a {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #222;
+    text-decoration: none;
+}
+
+.f-info a:hover {
+    color: #fe424d;
+    transform: translateY(-2px);
+}

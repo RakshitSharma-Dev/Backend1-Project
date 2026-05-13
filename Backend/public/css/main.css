@@ -1,0 +1,22 @@
+/* =====================================
+   Main CSS - Centralized Import File
+   ===================================== */
+
+/* Base Styles */
+@import url("./base/base.css");
+
+/* Component Styles */
+@import url("./components/navbar.css");
+@import url("./components/footer.css");
+@import url("./components/listings.css");
+@import url("./components/buttons.css");
+
+/* Page Specific Styles */
+@import url("./pages/home.css");
+@import url("./pages/profile.css");
+@import url("./pages/forms.css");
+@import url("./pages/show-page.css");
+@import url("./pages/details-page.css");
+
+/* Utility Styles */
+@import url("./utils/responsive.css");
