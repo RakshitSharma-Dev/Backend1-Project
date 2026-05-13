@@ -1,0 +1,25 @@
+{
+  "name": "payment-gateway",
+  "version": "1.0.0",
+  "description": "Dummy payment gateway with Express and Prisma",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node src/index.js",
+    "start": "node src/index.js",
+    "start:all": "docker compose up -d && npm run db:push && npm start",
+    "prisma:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "test": "echo \"No automated tests configured\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@prisma/client": "^6.16.0",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "prisma": "^6.16.0"
+  }
+}
