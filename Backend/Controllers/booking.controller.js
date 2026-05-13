@@ -23,9 +23,38 @@ export const createBooking = async (req, res, next) => {
 		user: req.user._id,
 	});
 
+	try {
+		const paymentRes = await fetch("http://localhost:7000/payments", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				amount: newBooking.totalPrice,
+				currency: "INR",
+				paymentMethod: "card",
+				customerName: req.user.firstName || "Guest",
+				reference: newBooking._id.toString()
+			})
+		});
+
+		const paymentData = await paymentRes.json();
+
+		if (!paymentRes.ok || paymentData?.transaction?.status !== "APPROVED") {
+			req.flash("error", "Payment declined or failed. Please try again.");
+			return res.redirect(`/booking/${listingId}/bookings/new`);
+		}
+
+		newBooking.status = "confirmed";
+	} catch (error) {
+		console.error("Payment Error:", error);
+		req.flash("error", "Payment gateway is currently unreachable.");
+		return res.redirect(`/booking/${listingId}/bookings/new`);
+	}
+
 	await newBooking.save();
 
-	req.flash("success", "Booking created successfully!");
+	req.flash("success", "Booking and Payment successful!");
 	res.redirect(`/listing/${listingId}`);
 };
 

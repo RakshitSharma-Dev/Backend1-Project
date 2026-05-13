@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './DB/db.js';
 import listinRoutes from './Routes/listing.route.js';
@@ -25,8 +26,14 @@ const require = createRequire(import.meta.url);
 const LocalStrategy = require('passport-local').Strategy;
 
 const app = express();
+app.use(cors());
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 
 connectDB();
 

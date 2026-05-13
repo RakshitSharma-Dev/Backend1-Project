@@ -39,7 +39,7 @@ if (bookingSection) {
 
             const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
             const guests = Math.max(1, Number(guestsInput.value || 1));
-            const total = nights * nightPrice;
+            const total = nights * nightPrice * guests;
 
             bookingTotal.textContent = total.toLocaleString('en-IN');
             totalPriceInput.value = String(total);

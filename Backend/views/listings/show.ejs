@@ -68,24 +68,21 @@
                                                     <%= showListing.location %>, <%= showListing.country %>
                                                 </div>
 
-                                                <% if(currentUser && showListing.owner &&
-                                                    !showListing.owner.equals(currentUser._id)) { %>
-                                                    <% if(showListing.isAvailable && showListing.isPublished) { %>
-                                                        <div class="booking-action">
-                                                            <a href="/booking/<%= showListing._id %>/bookings/new"
-                                                                class="listing-btn">
-                                                                Book Now
-                                                            </a>
-                                                        </div>
-                                                        <% } else { %>
-                                                            <div class="booking-action">
-                                                                <button class="listing-btn" disabled
-                                                                    style="opacity:0.5;cursor:not-allowed;">
-                                                                    Not Available
-                                                                </button>
-                                                            </div>
-                                                            <% } %>
-                                                                <% } %>
+                                                <% if(showListing.isAvailable && showListing.isPublished) { %>
+                                                    <div class="booking-action">
+                                                        <a href="/booking/<%= showListing._id %>/bookings/new"
+                                                            class="listing-btn">
+                                                            Book Now
+                                                        </a>
+                                                    </div>
+                                                <% } else { %>
+                                                    <div class="booking-action">
+                                                        <button class="listing-btn" disabled
+                                                            style="opacity:0.5;cursor:not-allowed;">
+                                                            Not Available
+                                                        </button>
+                                                    </div>
+                                                <% } %>
 
                                                                     <% if(currentUser && showListing.owner &&
                                                                         showListing.owner.equals(currentUser._id)) { %>
