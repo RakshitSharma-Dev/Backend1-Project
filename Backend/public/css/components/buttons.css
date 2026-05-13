@@ -1,0 +1,66 @@
+/* Global Button Styles */
+.btn-edit, .btn-delete, .btn-toggle {
+    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #fe424d 0%, #ff5a5f 100%);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(254, 66, 77, 0.3);
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(254, 66, 77, 0.4);
+}
+
+.btn-edit:active {
+    transform: translateY(0);
+}
+
+.btn-delete, .btn-toggle {
+    background-color: #fff;
+    color: #222;
+    border: 1.5px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.btn-delete:hover, .btn-toggle:hover {
+    background-color: #222;
+    color: #fff;
+    border-color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-delete:active, .btn-toggle:active {
+    transform: translateY(0);
+}
+
+/* Button ripple effect */
+.btn-edit::after, .btn-delete::after, .btn-toggle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-edit:active::after, .btn-delete:active::after, .btn-toggle:active::after {
+    width: 300px;
+    height: 300px;
+}

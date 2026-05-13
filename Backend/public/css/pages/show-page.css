@@ -1,0 +1,267 @@
+.show-wrapper {
+    width: 100%;
+    max-width: 780px;
+    animation: slideInUp 0.6s ease-out;
+    margin: 0 auto;
+}
+
+.show-page {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.show-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1.5rem;
+    animation: slideInUp 0.6s ease-out;
+    text-align: center;
+}
+
+.show-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    margin-bottom: 2rem;
+}
+
+.show-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: #fafafa;
+}
+
+.gallery-main {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gallery-main:hover {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+}
+
+.gallery-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-thumbs {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.gallery-thumb {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2.5px solid #ebebeb;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.gallery-thumb:hover {
+    border-color: #fe424d;
+    transform: scale(1.05);
+}
+
+.gallery-thumb.active {
+    border-color: #fe424d;
+    box-shadow: 0 4px 12px rgba(254, 66, 77, 0.3);
+}
+
+.show-info {
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.show-listing-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.show-description {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.show-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(254, 66, 77, 0.08) 0%, rgba(254, 66, 77, 0.03) 100%);
+    border-radius: 10px;
+    border: 1px solid rgba(254, 66, 77, 0.15);
+}
+
+.show-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fe424d;
+}
+
+.per-night {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #666;
+}
+
+.show-location {
+    font-size: 1rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.show-location i {
+    color: #fe424d;
+    font-size: 1.1rem;
+}
+
+.booking-action {
+    margin: 1.5rem 0;
+}
+
+.show-img-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.show-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Booking Section */
+.booking-section {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid #ebebeb;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #ffffff 0%, #fff8f8 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.booking-section:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Reviews */
+.review-card {
+    border: 1px solid #ebebeb;
+    border-radius: 14px;
+    padding: 1.5rem;
+    background-color: #fafafa;
+    margin-bottom: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideInUp 0.5s ease-out;
+}
+
+.review-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: #fe424d;
+}
+
+.review-username {
+    font-size: 0.8rem;
+    color: #888;
+    font-weight: 400;
+    margin-left: 0.25rem;
+}
+
+/* Badges */
+.viewer-count-badge, .availability-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.viewer-count-badge {
+    background: linear-gradient(135deg, rgba(100, 150, 255, 0.1) 0%, rgba(100, 150, 255, 0.05) 100%);
+    border: 1px solid rgba(100, 150, 255, 0.2);
+    color: #6496ff;
+}
+
+.viewer-count-badge i {
+    color: #6496ff;
+}
+
+.availability-badge {
+    margin-right: 0.75rem;
+}
+
+.availability-badge.available {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%);
+    border: 1px solid rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+}
+
+.availability-badge.available i {
+    color: #4caf50;
+}
+
+.availability-badge.unavailable {
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(244, 67, 54, 0.05) 100%);
+    border: 1px solid rgba(244, 67, 54, 0.2);
+    color: #f44336;
+}
+
+.availability-badge.unavailable i {
+    color: #f44336;
+}
+
+.availability-badge.unpublished {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%);
+    border: 1px solid rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+}
+
+.availability-badge.unpublished i {
+    color: #ff9800;
+}
+
+/* Map */
+.listing-map {
+    width: 100%;
+    height: 350px;
+    border-radius: 16px;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.listing-map:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}

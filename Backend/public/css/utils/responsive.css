@@ -1,0 +1,115 @@
+/* Responsive Design - Mobile Optimized */
+
+@media (max-width: 1024px) {
+    .hero {
+        height: 70vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        height: auto;
+        padding: 4rem 1rem;
+    }
+
+    .hero-title {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    .navbar-search {
+        max-width: 100%;
+        margin: 0 1rem;
+    }
+
+    .feature-card {
+        padding: 1.75rem 1.5rem;
+    }
+
+    .features {
+        padding: 3rem 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .f-info {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .show-page {
+        padding: 1rem;
+    }
+
+    .show-wrapper {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .show-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .profile-listing-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-listing-img-wrapper {
+        width: 100%;
+        height: 150px;
+    }
+
+    .navbar .nav-link {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-edit, .btn-delete, .btn-toggle {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .form-submit-btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 0.95rem;
+    }
+
+    .navbar {
+        height: 4rem;
+        padding: 0 1rem;
+    }
+
+    .brand-name {
+        font-size: 1rem;
+    }
+
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 1.4rem;
+    }
+
+    .profile-name {
+        font-size: 1.3rem;
+    }
+
+    .gallery-main {
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+}

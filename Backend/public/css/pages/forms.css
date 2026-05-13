@@ -1,0 +1,58 @@
+.form-page {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 1rem 2rem 1rem;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 620px;
+}
+
+.form-wrapper .form-control {
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: #fafafa;
+    font-size: 1rem;
+}
+
+.form-wrapper .form-control:focus {
+    border-color: #fe424d;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.15);
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.form-submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, #fe424d 0%, #ff5a5f 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(254, 66, 77, 0.3);
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.form-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(254, 66, 77, 0.4);
+}
+
+.form-submit-btn:active {
+    transform: translateY(0);
+}
+
+.otp-input {
+    letter-spacing: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+}
