@@ -36,11 +36,13 @@
                                 <div class="profile-booking-main">
                                     <div>
                                         <p class="profile-booking-title">
-                                            <%= booking.listing ? booking.listing.title : 'Listing no longer available' %>
+                                            <%= booking.listing ? booking.listing.title : 'Listing no longer available'
+                                                %>
                                         </p>
                                         <p class="profile-booking-meta">
                                             <i class="fa-regular fa-calendar"></i>
-                                            <%= booking.checkIn.toDateString() %> - <%= booking.checkOut.toDateString() %>
+                                            <%= booking.checkIn.toDateString() %> - <%= booking.checkOut.toDateString()
+                                                    %>
                                         </p>
                                         <p class="profile-booking-meta">
                                             <i class="fa-solid fa-users"></i>
@@ -57,20 +59,24 @@
                                         <%= booking.status %>
                                     </span>
                                     <% if(booking.listing) { %>
-                                        <a href="/listing/<%= booking.listing._id %>" class="profile-booking-link">View listing</a>
-                                    <% } %>
-                                    <% if(booking.status !== 'cancelled' && booking.status !== 'completed') { %>
-                                        <form action="/booking/bookings/<%= booking._id %>/cancel?_method=PUT" method="POST">
-                                            <button type="submit" class="profile-booking-cancel-btn">Cancel</button>
-                                        </form>
-                                    <% } %>
+                                        <a href="/listing/<%= booking.listing._id %>" class="profile-booking-link">View
+                                            listing</a>
+                                        <% } %>
+                                            <% if(booking.status !=='cancelled' && booking.status !=='completed' ) { %>
+                                                <form action="/booking/bookings/<%= booking._id %>/cancel?_method=PUT"
+                                                    method="POST">
+                                                    <button type="submit"
+                                                        class="profile-booking-cancel-btn">Cancel</button>
+                                                </form>
+                                                <% } %>
                                 </div>
                             </div>
-                        <% } %>
+                            <% } %>
                     </div>
-                <% } else { %>
-                    <p class="profile-empty">You have no bookings yet. Browse listings to reserve your next stay.</p>
-                <% } %>
+                    <% } else { %>
+                        <p class="profile-empty">You have no bookings yet. Browse listings to reserve your next stay.
+                        </p>
+                        <% } %>
             </div>
 
             <div class="profile-divider"></div>
