@@ -24,7 +24,6 @@ const geocode = async (location, country) => {
 
 export const getAllListings = async (req, res) => {
     const search = req.query.search || "";
-
     const allListings = await Listing.find(
         search ? {
             $and: [
@@ -38,7 +37,19 @@ export const getAllListings = async (req, res) => {
                 }
             ]
         } : { isPublished: { $ne: false } }
-    );
+    ).populate('reviews');
+
+    // compute average rating and review count for each listing
+    for (let listing of allListings) {
+        if (listing.reviews && listing.reviews.length > 0) {
+            const sum = listing.reviews.reduce((acc, r) => acc + (r.rating || 0), 0);
+            listing.avgRating = sum / listing.reviews.length;
+            listing.reviewCount = listing.reviews.length;
+        } else {
+            listing.avgRating = null;
+            listing.reviewCount = 0;
+        }
+    }
 
     res.render("listings/index.ejs", { allListings, search });
 }

@@ -85,36 +85,6 @@
     .pro-card:hover .pro-img {
         transform: scale(1.05);
     }
-    .pro-heart {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        color: rgba(0, 0, 0, 0.4);
-        stroke: white;
-        stroke-width: 2px;
-        font-size: 1.5rem;
-        z-index: 2;
-        transition: transform 0.2s, color 0.2s;
-    }
-    .pro-heart:hover {
-        transform: scale(1.15);
-        color: #ff385c;
-        stroke: #ff385c;
-    }
-    .pro-badge {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: rgba(255, 255, 255, 0.95);
-        color: #222;
-        font-weight: 700;
-        font-size: 0.8rem;
-        padding: 5px 12px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-        z-index: 2;
-        backdrop-filter: blur(4px);
-    }
     .pro-info {
         padding: 0 2px;
     }
@@ -184,16 +154,18 @@
                 <div class="masonry-item">
                     <a href="/listing/<%= listing._id %>" class="pro-card">
                         <div class="pro-img-wrapper shadow-sm">
-                            <i class="fa-solid fa-heart pro-heart"></i>
-                            <% if (listing.price > 1000) { %>
-                                <div class="pro-badge">Guest favourite</div>
-                            <% } %>
                             <img src="<%= listing.image.url %>" class="pro-img" alt="Listing Image">
                         </div>
                         <div class="pro-info">
                             <div class="pro-title-row">
                                 <h5 class="pro-title"><%= listing.title %></h5>
-                                <div class="pro-rating"><i class="fa-solid fa-star" style="font-size: 0.8rem;"></i> 4.9</div>
+                                <div class="pro-rating">
+                                    <i class="fa-solid fa-star" style="font-size: 0.8rem;"></i>
+                                    <%= listing.avgRating ? listing.avgRating.toFixed(1) : 'New' %>
+                                    <% if(listing.reviewCount && listing.reviewCount > 0) { %>
+                                        · <a href="/listing/<%= listing._id %>#reviews" class="text-dark fw-bold"><%= listing.reviewCount %> reviews</a>
+                                    <% } %>
+                                </div>
                             </div>
                             <p class="pro-location m-0"><%= listing.location %>, <%= listing.country %></p>
                             <p class="pro-host m-0">Professional Host</p>

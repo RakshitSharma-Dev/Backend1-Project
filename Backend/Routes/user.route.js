@@ -9,11 +9,13 @@ import {
     loginUser,
     logoutUser,
     getProfile,
+    uploadProfilePic,
 } from '../Controllers/user.controller.js';
 import wrapAsync from '../Middlewares/wrapAsync.js';
 import validateUser from '../Middlewares/validateUser.js';
 import isLoggedIn from '../Middlewares/isLoggedIn.js';
 import passport from 'passport';
+import upload from '../Middlewares/upload.js';
 
 const router = express.Router();
 
@@ -29,5 +31,6 @@ router.post('/login', passport.authenticate('local', {
 }), wrapAsync(loginUser));
 router.get('/logout', logoutUser);
 router.get('/profile', isLoggedIn, wrapAsync(getProfile));
+router.post('/profile/photo', isLoggedIn, upload.single('profileImage'), wrapAsync(uploadProfilePic));
 
 export default router;

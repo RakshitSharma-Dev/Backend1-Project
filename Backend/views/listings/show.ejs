@@ -1,257 +1,416 @@
 <% layout('/layouts/boilerplate') %>
 
-    <div class="show-page">
-        <div class="show-wrapper">
+<style>
+    /* Premium Show Page Styles */
+    .show-header-title {
+        font-weight: 800;
+        font-size: 2.2rem;
+        color: #222;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.5rem;
+    }
+    .show-meta-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        color: #222;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+    .show-meta-left i {
+        color: #ff385c;
+    }
+    .gallery-wrapper {
+        width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        aspect-ratio: 21/9;
+        background: #f1f3f5;
+        margin-bottom: 2.5rem;
+    }
+    .gallery-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .main-content-split {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .left-details {
+        width: 100%;
+    }
+    @media (min-width: 992px) {
+        .left-details { width: 66%; padding-right: 5%; }
+        .right-booking { width: 34%; }
+    }
+    
+    .host-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem 0;
+        border-bottom: 1px solid #ebebeb;
+    }
+    .host-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #222;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .about-section {
+        padding: 2rem 0;
+        border-bottom: 1px solid #ebebeb;
+    }
+    .about-text {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #222;
+        white-space: pre-line;
+    }
 
-            <h2 class="show-title">Listing Details</h2>
+    /* Floating Booking Card */
+    .booking-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        position: sticky;
+        top: 100px;
+    }
+    .booking-price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #222;
+    }
+    .booking-price span {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #717171;
+    }
+    .booking-btn {
+        background: linear-gradient(to right, #e61e4d 0%, #e31c5f 50%, #d70466 100%);
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-top: 1.5rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .booking-btn:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(227, 28, 95, 0.4);
+        color: white;
+    }
+    .disabled-btn {
+        background: #ced4da;
+        color: #6c757d;
+        cursor: not-allowed;
+    }
 
-            <div class="viewer-count-badge">
-                <i class="fa-solid fa-eye"></i>
-                <span id="viewerCount">1</span> people viewing this right now
-            </div>
+    /* Owner Actions */
+    .owner-actions {
+        padding: 1.5rem 0;
+        border-bottom: 1px solid #ebebeb;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .action-btn {
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid #222;
+        color: #222;
+        background: white;
+        transition: all 0.2s;
+        font-size: 0.9rem;
+    }
+    .action-btn:hover {
+        background: #f8f9fa;
+        color: #000;
+    }
+    .delete-btn {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+    .delete-btn:hover {
+        background: #dc3545;
+        color: white;
+    }
 
-            <% if(!showListing.isAvailable) { %>
-                <div class="availability-badge unavailable">
-                    <i class="fa-solid fa-circle-xmark"></i> Currently Unavailable
-                </div>
-                <% } %>
+    /* Reviews */
+    .reviews-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    @media (min-width: 768px) {
+        .reviews-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .review-card {
+        padding: 1.25rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 1px solid #ebebeb;
+    }
+    .review-author {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+    .review-author-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #495057;
+    }
+    .badge-status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #ffebee;
+        color: #c62828;
+    }
+    
+    /* Interactive Star Rating */
+    .star-rating {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        gap: 8px;
+    }
+    .star-rating input {
+        display: none;
+    }
+    .star-rating label {
+        cursor: pointer;
+        font-size: 1.8rem;
+        color: #e9ecef;
+        transition: color 0.2s, transform 0.2s;
+    }
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #ffb400;
+    }
+    .star-rating label:hover {
+        transform: scale(1.1);
+    }
+</style>
 
-                    <% if(!showListing.isPublished) { %>
-                        <div class="availability-badge unpublished">
-                            <i class="fa-solid fa-eye-slash"></i> Unpublished
-                        </div>
-                        <% } %>
+<div class="container-fluid px-4 px-md-5 mt-4 mb-5" style="max-width: 1200px; margin: auto;">
 
-                            <div class="show-card">
-
-                                <% if(showListing.images && showListing.images.length> 0) { %>
-                                    <div class="show-gallery">
-                                        <div class="gallery-main">
-                                            <img src="<%= showListing.images[0].url %>" alt="listing image"
-                                                class="gallery-main-img" id="mainImg">
-                                        </div>
-                                        <% if(showListing.images.length> 1) { %>
-                                            <div class="gallery-thumbs">
-                                                <% for(let img of showListing.images) { %>
-                                                    <img src="<%= img.url %>" alt="listing image" class="gallery-thumb"
-                                                        onclick="document.getElementById('mainImg').src='<%= img.url %>'">
-                                                    <% } %>
-                                            </div>
-                                            <% } %>
-                                    </div>
-                                    <% } else if (showListing.image && showListing.image.url) { %>
-                                        <div class="show-img-wrapper">
-                                            <img src="<%= showListing.image.url %>" alt="listing image"
-                                                class="show-img">
-                                        </div>
-                                        <% } %>
-
-                                            <div class="show-info">
-
-                                                <h3 class="show-listing-title">
-                                                    <%= showListing.title %>
-                                                </h3>
-
-                                                <p class="show-description">
-                                                    <%= showListing.description %>
-                                                </p>
-
-                                                <div class="show-meta">
-                                                    <span class="show-price">
-                                                        ₹ <%= showListing.price.toLocaleString("en-IN") %>
-                                                            <span class="per-night">/ night</span>
-                                                    </span>
-                                                </div>
-
-                                                <div class="show-location">
-                                                    <i class="fa-solid fa-location-dot"></i>
-                                                    <%= showListing.location %>, <%= showListing.country %>
-                                                </div>
-
-                                                <% if(showListing.isAvailable && showListing.isPublished) { %>
-                                                    <div class="booking-action">
-                                                        <a href="/booking/<%= showListing._id %>/bookings/new"
-                                                            class="listing-btn">
-                                                            Book Now
-                                                        </a>
-                                                    </div>
-                                                <% } else { %>
-                                                    <div class="booking-action">
-                                                        <button class="listing-btn" disabled
-                                                            style="opacity:0.5;cursor:not-allowed;">
-                                                            Not Available
-                                                        </button>
-                                                    </div>
-                                                <% } %>
-
-                                                                    <% if(currentUser && showListing.owner &&
-                                                                        showListing.owner.equals(currentUser._id)) { %>
-                                                                        <div class="show-actions">
-
-                                                                            <a href="/listing/<%= showListing._id %>/edit"
-                                                                                class="btn-edit">
-                                                                                Edit Listing
-                                                                            </a>
-
-                                                                            <form
-                                                                                action="/listing/<%= showListing._id %>/toggle-availability?_method=PATCH"
-                                                                                method="POST" style="display:inline;">
-                                                                                <button class="btn-toggle">
-                                                                                    <%= showListing.isAvailable
-                                                                                        ? 'Mark Unavailable'
-                                                                                        : 'Mark Available' %>
-                                                                                </button>
-                                                                            </form>
-
-                                                                            <form
-                                                                                action="/listing/<%= showListing._id %>/toggle-published?_method=PATCH"
-                                                                                method="POST" style="display:inline;">
-                                                                                <button class="btn-toggle">
-                                                                                    <%= showListing.isPublished
-                                                                                        ? 'Unpublish' : 'Publish' %>
-                                                                                </button>
-                                                                            </form>
-
-                                                                            <form
-                                                                                action="/listing/<%= showListing._id %>?_method=DELETE"
-                                                                                method="POST">
-                                                                                <button
-                                                                                    class="btn-delete">Delete</button>
-                                                                            </form>
-
-                                                                        </div>
-                                                                        <% } %>
-
-                                            </div>
-
-                            </div>
-
-                            <% if(showListing.geometry && showListing.geometry.coordinates &&
-                                showListing.geometry.coordinates[0] !==0) { %>
-                                <div class="map-section">
-                                    <h4 class="map-title">
-                                        <i class="fa-solid fa-location-dot" style="color:#fe424d;"></i>
-                                        Location
-                                    </h4>
-                                    <div id="map" class="listing-map"></div>
-                                </div>
-                                <% } %>
-
-                                    <% if(currentUser) { %>
-                                        <div class="review-section">
-
-                                            <h4 class="review-section-title">Leave a Review</h4>
-                                            <p class="review-section-subtitle">Share your experience with this property
-                                            </p>
-
-                                            <form action="/listing/<%= showListing._id %>/reviews" method="POST"
-                                                class="review-form needs-validation" novalidate>
-
-                                                <div class="mb-3">
-                                                    <label for="rating" class="form-label">
-                                                        Rating — <span id="ratingValue">3</span> / 5
-                                                    </label>
-                                                    <input type="range" min="1" max="5" value="3" id="rating"
-                                                        name="review[rating]" class="review-range"
-                                                        oninput="document.getElementById('ratingValue').innerText = this.value">
-                                                    <div class="review-range-labels">
-                                                        <span>1 — Poor</span>
-                                                        <span>3 — Average</span>
-                                                        <span>5 — Excellent</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="comment" class="form-label">Comment</label>
-                                                    <textarea name="review[comment]" id="comment"
-                                                        class="form-control review-textarea"
-                                                        placeholder="Share your experience with this property..."
-                                                        minlength="10" maxlength="500" required></textarea>
-                                                    <div class="valid-feedback">Comment looks good!</div>
-                                                    <div class="invalid-feedback">
-                                                        Comment is required and must be at least 10 characters.
-                                                    </div>
-                                                </div>
-
-                                                <button type="submit" class="form-submit-btn">Submit Review</button>
-
-                                            </form>
-                                        </div>
-                                        <% } %>
-
-                                            <% if(showListing.reviews && showListing.reviews.length> 0) { %>
-                                                <div class="reviews-list-section">
-
-                                                    <h4 class="review-section-title">Guest Reviews</h4>
-                                                    <p class="review-section-subtitle">
-                                                        <%= showListing.reviews.length %> review(s) for this property
-                                                    </p>
-
-                                                    <div class="reviews-list">
-                                                        <% for(let review of showListing.reviews) { %>
-                                                            <div class="review-card">
-
-                                                                <% if(review.author) { %>
-                                                                    <p class="review-author">
-                                                                        <i class="fa-regular fa-circle-user"></i>
-                                                                        <%= review.author.firstName %>
-                                                                            <%= review.author.lastName %>
-                                                                                <span class="review-username">@<%=
-                                                                                        review.author.username %></span>
-                                                                    </p>
-                                                                    <% } %>
-
-                                                                        <div class="review-card-header">
-                                                                            <div class="review-stars">
-                                                                                <% for(let i=1; i <=5; i++) { %>
-                                                                                    <% if(i <=review.rating) { %>
-                                                                                        <i class="fa-solid fa-star"
-                                                                                            style="color:#fe424d;font-size:0.85rem;"></i>
-                                                                                        <% } else { %>
-                                                                                            <i class="fa-regular fa-star"
-                                                                                                style="color:#ddd;font-size:0.85rem;"></i>
-                                                                                            <% } %>
-                                                                                                <% } %>
-                                                                            </div>
-                                                                            <span class="review-date">
-                                                                                <%= review.createdAt ?
-                                                                                    review.createdAt.toDateString() : ''
-                                                                                    %>
-                                                                            </span>
-                                                                        </div>
-
-                                                                        <p class="review-comment">
-                                                                            <%= review.comment %>
-                                                                        </p>
-
-                                                                        <% if(currentUser && review.author &&
-                                                                            review.author.equals(currentUser._id)) { %>
-                                                                            <form
-                                                                                action="/listing/<%= showListing._id %>/reviews/<%= review._id %>?_method=DELETE"
-                                                                                method="POST">
-                                                                                <button class="review-delete-btn">Delete
-                                                                                    Review</button>
-                                                                            </form>
-                                                                            <% } %>
-
-                                                            </div>
-                                                            <% } %>
-                                                    </div>
-
-                                                </div>
-                                                <% } %>
-
+    <!-- Title and Meta -->
+    <h1 class="show-header-title"><%= showListing.title %></h1>
+    
+    <div class="show-meta-row">
+        <div class="show-meta-left d-flex align-items-center gap-3">
+            <span><i class="fa-solid fa-star"></i> 4.9 · <a href="#reviews" class="text-dark fw-bold"><%= showListing.reviews ? showListing.reviews.length : 0 %> reviews</a></span>
+            <span class="text-muted">·</span>
+            <span><i class="fa-solid fa-location-dot"></i> <a href="#map-section" class="text-dark fw-bold"><%= showListing.location %>, <%= showListing.country %></a></span>
+        </div>
+        <div class="show-meta-right text-muted d-flex align-items-center gap-2">
+            <i class="fa-solid fa-eye text-primary"></i> <span id="viewerCount">1</span> viewing right now
         </div>
     </div>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <!-- Status Badges -->
+    <% if(!showListing.isAvailable || !showListing.isPublished) { %>
+        <div class="mb-4 d-flex gap-2">
+            <% if(!showListing.isAvailable) { %>
+                <div class="badge-status"><i class="fa-solid fa-circle-xmark"></i> Currently Unavailable</div>
+            <% } %>
+            <% if(!showListing.isPublished) { %>
+                <div class="badge-status bg-secondary text-white"><i class="fa-solid fa-eye-slash"></i> Unpublished</div>
+            <% } %>
+        </div>
+    <% } %>
 
-    <div id="listing-data" data-listing-id="<%= showListing._id %>"
-        data-has-coords="<%= (showListing.geometry && showListing.geometry.coordinates && showListing.geometry.coordinates[0] !== 0) ? 'true' : 'false' %>"
-        data-coords="<%- JSON.stringify(showListing.geometry ? showListing.geometry.coordinates : [0,0]) %>"
-        data-title="<%= showListing.title %>" data-location="<%= showListing.location %>"
-        data-country="<%= showListing.country %>" style="display:none;"></div>
+    <!-- Gallery -->
+    <div class="gallery-wrapper shadow-sm">
+        <% if(showListing.images && showListing.images.length > 0) { %>
+            <img src="<%= showListing.images[0].url %>" alt="listing image" class="gallery-img">
+        <% } else if (showListing.image && showListing.image.url) { %>
+            <img src="<%= showListing.image.url %>" alt="listing image" class="gallery-img">
+        <% } %>
+    </div>
 
-    <script src="/js/show.js"></script>
+    <div class="main-content-split">
+        <!-- Left Column: Details -->
+        <div class="left-details">
+            <h3 class="fw-bold mb-1">Entire place hosted by Professional Host</h3>
+            <p class="text-muted mb-0">2 guests · 1 bedroom · 1 bed · 1 bath</p>
+            
+            <div class="host-row mt-4">
+                <div class="host-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold m-0">Experienced Host</h5>
+                    <p class="text-muted m-0" style="font-size: 0.9rem;">Highly rated for clean, comfortable stays.</p>
+                </div>
+            </div>
+
+            <div class="about-section">
+                <h4 class="fw-bold mb-3">About this space</h4>
+                <div class="about-text"><%= showListing.description %></div>
+            </div>
+
+            <!-- Owner Actions -->
+            <% if(currentUser && showListing.owner && showListing.owner.equals(currentUser._id)) { %>
+                <div class="owner-actions">
+                    <h5 class="w-100 fw-bold mb-3">Host Dashboard</h5>
+                    <a href="/listing/<%= showListing._id %>/edit" class="action-btn">Edit Listing</a>
+                    <form action="/listing/<%= showListing._id %>/toggle-availability?_method=PATCH" method="POST" style="margin:0;">
+                        <button class="action-btn"><%= showListing.isAvailable ? 'Mark Unavailable' : 'Mark Available' %></button>
+                    </form>
+                    <form action="/listing/<%= showListing._id %>/toggle-published?_method=PATCH" method="POST" style="margin:0;">
+                        <button class="action-btn"><%= showListing.isPublished ? 'Unpublish' : 'Publish' %></button>
+                    </form>
+                    <form action="/listing/<%= showListing._id %>?_method=DELETE" method="POST" style="margin:0;">
+                        <button class="action-btn delete-btn">Delete Listing</button>
+                    </form>
+                </div>
+            <% } %>
+
+            <!-- Map Section -->
+            <% if(showListing.geometry && showListing.geometry.coordinates && showListing.geometry.coordinates[0] !==0) { %>
+                <div class="about-section" id="map-section">
+                    <h4 class="fw-bold mb-4">Where you'll be</h4>
+                    <div id="map" class="shadow-sm" style="width: 100%; height: 400px; border-radius: 12px; z-index: 1;"></div>
+                </div>
+            <% } %>
+
+            <!-- Reviews Section -->
+            <div class="about-section" id="reviews" style="border: none;">
+                <h4 class="fw-bold mb-4"><i class="fa-solid fa-star" style="color: #222;"></i> 4.9 · <%= showListing.reviews ? showListing.reviews.length : 0 %> reviews</h4>
+                
+                <% if(currentUser) { %>
+                    <div class="review-form-card p-4 rounded-4 border mb-4" style="background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.04);">
+                        <h5 class="fw-bold mb-3">Leave a Review</h5>
+                        <form action="/listing/<%= showListing._id %>/reviews" method="POST" class="needs-validation" novalidate>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold d-block mb-2">Overall Rating</label>
+                                <div class="star-rating">
+                                    <input type="radio" id="star5" name="review[rating]" value="5" checked />
+                                    <label for="star5" title="5 stars"><i class="fa-solid fa-star"></i></label>
+                                    
+                                    <input type="radio" id="star4" name="review[rating]" value="4" />
+                                    <label for="star4" title="4 stars"><i class="fa-solid fa-star"></i></label>
+                                    
+                                    <input type="radio" id="star3" name="review[rating]" value="3" />
+                                    <label for="star3" title="3 stars"><i class="fa-solid fa-star"></i></label>
+                                    
+                                    <input type="radio" id="star2" name="review[rating]" value="2" />
+                                    <label for="star2" title="2 stars"><i class="fa-solid fa-star"></i></label>
+                                    
+                                    <input type="radio" id="star1" name="review[rating]" value="1" />
+                                    <label for="star1" title="1 star"><i class="fa-solid fa-star"></i></label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Share your experience</label>
+                                <textarea name="review[comment]" class="form-control bg-light" rows="4" placeholder="What did you love about this place?" required minlength="10" style="border-radius: 12px; border: 1px solid #ced4da; padding: 12px; font-size: 0.95rem;"></textarea>
+                            </div>
+                            <button class="btn btn-dark rounded-3 px-4 py-2 fw-bold" style="background: #222;">Submit Review</button>
+                        </form>
+                    </div>
+                <% } %>
+
+                <% if(showListing.reviews && showListing.reviews.length > 0) { %>
+                    <div class="reviews-grid">
+                        <% for(let review of showListing.reviews) { %>
+                            <div class="review-card">
+                                <div class="review-author">
+                                    <div class="review-author-avatar shadow-sm">
+                                        <% if(review.author) { %>
+                                            <%= review.author.firstName.charAt(0).toUpperCase() %>
+                                        <% } else { %>
+                                            <i class="fa-solid fa-user"></i>
+                                        <% } %>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark"><%= review.author ? review.author.firstName : 'Anonymous User' %></div>
+                                        <div class="text-muted" style="font-size: 0.85rem;"><%= review.createdAt ? review.createdAt.toDateString() : 'Recently' %></div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <% for(let i=1; i <=5; i++) { %>
+                                        <% if(i <=review.rating) { %>
+                                            <i class="fa-solid fa-star" style="color: #222; font-size: 0.8rem;"></i>
+                                        <% } else { %>
+                                            <i class="fa-regular fa-star" style="color: #e9ecef; font-size: 0.8rem;"></i>
+                                        <% } %>
+                                    <% } %>
+                                </div>
+                                <p class="m-0" style="color: #495057; font-size: 0.95rem; line-height: 1.5;"><%= review.comment %></p>
+                                
+                                <% if(currentUser && review.author && review.author.equals(currentUser._id)) { %>
+                                    <form action="/listing/<%= showListing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="mt-3">
+                                        <button class="btn btn-sm btn-outline-danger rounded-3 fw-bold border-0 px-0" style="background: transparent;">Delete Review</button>
+                                    </form>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } %>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Booking Box -->
+        <div class="right-booking">
+            <div class="booking-card">
+                <div class="booking-price mb-4">
+                    ₹<%= showListing.price.toLocaleString("en-IN") %> <span>night</span>
+                </div>
+                
+                <% if(showListing.isAvailable && showListing.isPublished) { %>
+                    <a href="/booking/<%= showListing._id %>/bookings/new" class="booking-btn">Reserve</a>
+                    <div class="text-center mt-3 text-muted" style="font-size: 0.85rem;">You won't be charged yet</div>
+                <% } else { %>
+                    <button class="booking-btn disabled-btn" disabled>Not Available</button>
+                    <div class="text-center mt-3 text-danger" style="font-size: 0.85rem;">This property cannot be booked right now.</div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+<div id="listing-data" data-listing-id="<%= showListing._id %>"
+    data-has-coords="<%= (showListing.geometry && showListing.geometry.coordinates && showListing.geometry.coordinates[0] !== 0) ? 'true' : 'false' %>"
+    data-coords="<%- JSON.stringify(showListing.geometry ? showListing.geometry.coordinates : [0,0]) %>"
+    data-title="<%= showListing.title %>" data-location="<%= showListing.location %>"
+    data-country="<%= showListing.country %>" style="display:none;"></div>
+
+<script src="/js/show.js"></script>
