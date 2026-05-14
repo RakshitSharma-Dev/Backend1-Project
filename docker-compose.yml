@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: payment_gateway
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  payment-gateway:
+    build:
+      context: "./Payment gateway"
+    ports:
+      - "7000:7000"
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=public"
+      PORT: 7000
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: "./Backend"
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      MONGO_URL: "mongodb+srv://om_kamboj:janop%2309172714@cluster0.hgg0jbe.mongodb.net/Hostly"
+      SESSION_SECRET: "68c495a5a4d3fd10ca13c5139ac98bf09a95f50eabe9db66dc51c38f314383b2"
+      NODE_ENV: "development"
+      CLOUDINARY_CLOUD_NAME: "df6unoofh"
+      CLOUDINARY_API_KEY: "744713831824397"
+      CLOUDINARY_API_SECRET: "-mvQPzjt732L_8xmcNVogIvcWLg"
+      GMAIL_USER: "omkamboj09@gmail.com"
+      GMAIL_PASS: "owsvdhebfqmcfayw"
+      PAYMENT_URL: "http://payment-gateway:7000/payments"
+    depends_on:
+      - mongodb
+      - payment-gateway
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+  postgres_data:
