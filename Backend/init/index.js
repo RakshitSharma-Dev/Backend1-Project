@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 import Listing from "../models/listing.model.js";
 import { data } from "./data.js";
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/Hostly";
+import dotenv from "dotenv";
+dotenv.config({ path: "../.env" });
+
+const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/test";
 
 const initDB = async () => {
     await Listing.deleteMany({});

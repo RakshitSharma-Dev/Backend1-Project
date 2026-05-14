@@ -24,7 +24,8 @@ export const createBooking = async (req, res, next) => {
 	});
 
 	try {
-		const paymentRes = await fetch("http://localhost:7000/payments", {
+		const paymentUrl = process.env.PAYMENT_URL || "http://localhost:7000/payments";
+		const paymentRes = await fetch(paymentUrl, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
