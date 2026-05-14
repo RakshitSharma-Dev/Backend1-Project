@@ -1,52 +1,185 @@
 <% layout('/layouts/boilerplate') %>
 
-    <div class="container-fluid px-4 mt-4 mb-4">
-        <h3 class="mb-4">All Listings</h3>
+<style>
+    .listings-header {
+        font-weight: 800;
+        font-size: 2rem;
+        letter-spacing: -1px;
+        color: #222;
+        margin-bottom: 1.5rem;
+    }
+    .search-alert {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        padding: 16px 24px;
+        font-size: 1rem;
+        color: #495057;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .search-alert strong {
+        color: #222;
+    }
+    .clear-search-btn {
+        background: #222;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+    }
+    .clear-search-btn:hover {
+        background: #000;
+        color: #fff;
+    }
+    /* Masonry Layout */
+    .masonry-grid {
+        column-count: 4;
+        column-gap: 1.5rem;
+        padding-top: 0.5rem;
+    }
+    @media (max-width: 1200px) { .masonry-grid { column-count: 3; } }
+    @media (max-width: 992px) { .masonry-grid { column-count: 2; } }
+    @media (max-width: 576px) { .masonry-grid { column-count: 1; } }
 
-        <% if(search) { %>
-            <p class="search-results-info">
-                <% if(allListings.length> 0) { %>
-                    Found <strong>
-                        <%= allListings.length %>
-                    </strong> result(s) for "<strong>
-                        <%= search %>
-                    </strong>"
-                    <a href="/listing" class="search-clear-link">Clear</a>
-                    <% } else { %>
-                        No listings found for "<strong>
-                            <%= search %>
-                        </strong>"
-                        <a href="/listing" class="search-clear-link">Clear</a>
-                        <% } %>
-            </p>
+    .masonry-item {
+        break-inside: avoid;
+        margin-bottom: 1.5rem;
+        display: inline-block; /* Helps prevent breaking across columns */
+        width: 100%;
+    }
+
+    /* Modern Card Styles */
+    .pro-card {
+        border: none;
+        background: transparent;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
+    .pro-card:hover {
+        color: inherit;
+    }
+    .pro-img-wrapper {
+        position: relative;
+        width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #e9ecef;
+        margin-bottom: 14px;
+        isolation: isolate;
+        -webkit-mask-image: -webkit-radial-gradient(white, black);
+    }
+    .pro-img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .pro-card:hover .pro-img {
+        transform: scale(1.05);
+    }
+    .pro-info {
+        padding: 0 2px;
+    }
+    .pro-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 3px;
+    }
+    .pro-title {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: #222;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 82%;
+    }
+    .pro-rating {
+        font-size: 0.95rem;
+        color: #222;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 500;
+    }
+    .pro-location {
+        color: #717171;
+        font-size: 0.95rem;
+        margin-bottom: 2px;
+    }
+    .pro-host {
+        color: #717171;
+        font-size: 0.95rem;
+        margin-bottom: 6px;
+    }
+    .pro-price {
+        font-weight: 600;
+        color: #222;
+        font-size: 1.05rem;
+        margin: 0;
+    }
+    .pro-price span {
+        font-weight: 400;
+    }
+</style>
+
+<div class="container-fluid px-4 px-md-5 mt-5 pt-3 mb-5">
+    <h3 class="listings-header">Explore all listings</h3>
+
+    <% if(search) { %>
+        <div class="search-alert mb-4 shadow-sm">
+            <% if(allListings.length > 0) { %>
+                <div>Found <strong><%= allListings.length %></strong> result(s) for "<strong><%= search %></strong>"</div>
+                <a href="/listing" class="clear-search-btn">Clear Search</a>
+            <% } else { %>
+                <div>No listings found for "<strong><%= search %></strong>"</div>
+                <a href="/listing" class="clear-search-btn">Clear Search</a>
             <% } %>
+        </div>
+    <% } %>
 
-                <% if(allListings.length> 0) { %>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 py-2">
-                        <% for(let listing of allListings){ %>
-                            <div class="col d-flex">
-                                <div class="listing-card w-100">
-                                    <div class="listing-img-wrapper">
-                                        <img src="<%= listing.image.url %>" class="listing-img" alt="listing_image">
-                                    </div>
-                                    <div class="listing-info">
-                                        <h5 class="listing-title">
-                                            <%= listing.title %>
-                                        </h5>
-                                        <p class="listing-price">₹ <%= listing.price.toLocaleString("en-IN") %> / night
-                                        </p>
-                                        <a href="/listing/<%= listing._id %>" class="listing-btn">View Details</a>
-                                    </div>
+    <% if(allListings.length > 0) { %>
+        <div class="masonry-grid">
+            <% for(let listing of allListings){ %>
+                <div class="masonry-item">
+                    <a href="/listing/<%= listing._id %>" class="pro-card">
+                        <div class="pro-img-wrapper shadow-sm">
+                            <img src="<%= listing.image.url %>" class="pro-img" alt="Listing Image">
+                        </div>
+                        <div class="pro-info">
+                            <div class="pro-title-row">
+                                <h5 class="pro-title"><%= listing.title %></h5>
+                                <div class="pro-rating">
+                                    <i class="fa-solid fa-star" style="font-size: 0.8rem;"></i>
+                                    <%= listing.avgRating ? listing.avgRating.toFixed(1) : 'New' %>
+                                    <% if(listing.reviewCount && listing.reviewCount > 0) { %>
+                                        · <a href="/listing/<%= listing._id %>#reviews" class="text-dark fw-bold"><%= listing.reviewCount %> reviews</a>
+                                    <% } %>
                                 </div>
                             </div>
-                            <% } %>
-                    </div>
-                    <% } else { %>
-                        <div class="no-results">
-                            <i class="fa-solid fa-magnifying-glass no-results-icon"></i>
-                            <p class="no-results-text">No listings found</p>
-                            <a href="/listing" class="listing-btn">Clear Search</a>
+                            <p class="pro-location m-0"><%= listing.location %>, <%= listing.country %></p>
+                            <p class="pro-host m-0">Professional Host</p>
+                            <p class="pro-price mt-1">₹<%= listing.price.toLocaleString("en-IN") %> <span>night</span></p>
                         </div>
-                        <% } %>
-
-    </div>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    <% } else if (!search) { %>
+        <div class="text-center py-5 my-5">
+            <i class="fa-solid fa-house-crack" style="font-size: 3rem; color: #dee2e6; margin-bottom: 1rem;"></i>
+            <h4 class="fw-bold text-dark">No listings available</h4>
+            <p class="text-muted">There are currently no listings published on the platform.</p>
+        </div>
+    <% } %>
+</div>

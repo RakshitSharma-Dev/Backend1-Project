@@ -1,118 +1,385 @@
 <% layout('/layouts/boilerplate') %>
 
-    <div class="profile-page">
-        <div class="profile-wrapper">
+<style>
+    /* Premium Profile Page Styles */
+    .profile-container {
+        max-width: 1000px;
+        margin: 3rem auto;
+        padding: 0 20px;
+    }
+    
+    .profile-header-card {
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+        background: #fff;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+        border: 1px solid #f1f3f5;
+        margin-bottom: 3.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .profile-avatar-large {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff385c, #d70466);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3.5rem;
+        font-weight: 800;
+        box-shadow: 0 8px 20px rgba(255, 56, 92, 0.3);
+    }
 
-            <div class="profile-header">
-                <div class="profile-avatar">
-                    <%= user.firstName.charAt(0).toUpperCase() %>
-                        <%= user.lastName.charAt(0).toUpperCase() %>
-                </div>
-                <div class="profile-info">
-                    <h2 class="profile-name">
-                        <%= user.firstName %>
-                            <%= user.lastName %>
-                    </h2>
-                    <p class="profile-username">@<%= user.username %>
-                    </p>
-                    <p class="profile-email"><i class="fa-regular fa-envelope"></i>
-                        <%= user.email %>
-                    </p>
-                    <p class="profile-since">
-                        <i class="fa-regular fa-calendar"></i>
-                        Member since <%= user.createdAt.toDateString() %>
-                    </p>
-                </div>
-            </div>
+    .profile-photo-uploader {
+        position: absolute;
+        right: -4px;
+        bottom: -4px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(4px);
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+        pointer-events: none;
+    }
 
-            <div class="profile-divider"></div>
+    .profile-avatar-wrap:hover .profile-photo-uploader,
+    .profile-avatar-wrap:focus-within .profile-photo-uploader {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
 
-            <div class="profile-section">
-                <h4 class="profile-section-title">My Bookings</h4>
-                <% if(bookings.length> 0) { %>
-                    <div class="profile-bookings">
-                        <% for(let booking of bookings) { %>
-                            <div class="profile-booking-card">
-                                <div class="profile-booking-main">
-                                    <div>
-                                        <p class="profile-booking-title">
-                                            <%= booking.listing ? booking.listing.title : 'Listing no longer available' %>
-                                        </p>
-                                        <p class="profile-booking-meta">
-                                            <i class="fa-regular fa-calendar"></i>
-                                            <%= booking.checkIn.toDateString() %> - <%= booking.checkOut.toDateString() %>
-                                        </p>
-                                        <p class="profile-booking-meta">
-                                            <i class="fa-solid fa-users"></i>
-                                            <%= booking.guests %> guest(s)
-                                        </p>
-                                    </div>
-                                    <div class="profile-booking-price">
-                                        ₹ <%= booking.totalPrice.toLocaleString("en-IN") %>
-                                    </div>
-                                </div>
+    .profile-photo-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.55rem 0.9rem;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 999px;
+        background: transparent;
+        color: #fff;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        box-shadow: none;
+        backdrop-filter: blur(8px);
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
 
-                                <div class="profile-booking-footer">
-                                    <span class="booking-status booking-status-<%= booking.status %>">
-                                        <%= booking.status %>
-                                    </span>
-                                    <% if(booking.listing) { %>
-                                        <a href="/listing/<%= booking.listing._id %>" class="profile-booking-link">View listing</a>
-                                    <% } %>
-                                    <% if(booking.status !== 'cancelled' && booking.status !== 'completed') { %>
-                                        <form action="/booking/bookings/<%= booking._id %>/cancel?_method=PUT" method="POST">
-                                            <button type="submit" class="profile-booking-cancel-btn">Cancel</button>
-                                        </form>
-                                    <% } %>
-                                </div>
-                            </div>
-                        <% } %>
-                    </div>
+    .profile-photo-btn i {
+        font-size: 0.8rem;
+        color: #fff;
+    }
+
+    .profile-photo-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .profile-photo-btn:focus-within {
+        outline: 3px solid rgba(255, 56, 92, 0.2);
+        outline-offset: 2px;
+    }
+    
+    .profile-user-info h2 {
+        font-weight: 800;
+        font-size: 2.5rem;
+        color: #222;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
+    }
+    
+    .profile-user-info p {
+        color: #717171;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .section-title {
+        font-weight: 800;
+        font-size: 1.8rem;
+        color: #222;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.5px;
+    }
+    
+    /* Bookings List */
+    .bookings-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        margin-bottom: 3.5rem;
+    }
+    
+    .booking-card-modern {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        border: 1px solid #ebebeb;
+        border-radius: 16px;
+        padding: 1.5rem 2rem;
+        transition: box-shadow 0.2s, transform 0.2s;
+    }
+    
+    .booking-card-modern:hover {
+        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        transform: translateY(-2px);
+    }
+    
+    .booking-details h5 {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: #222;
+        margin-bottom: 0.5rem;
+    }
+    
+    .booking-details p {
+        color: #717171;
+        margin-bottom: 0.3rem;
+        font-size: 0.95rem;
+    }
+    
+    .booking-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+        min-width: 150px;
+        margin-top: 1rem;
+    }
+    @media (min-width: 576px) {
+        .booking-actions { margin-top: 0; }
+    }
+    
+    .booking-price-tag {
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: #222;
+    }
+    
+    .status-badge {
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: capitalize;
+    }
+    
+    .status-confirmed { background: #e8f5e9; color: #2e7d32; }
+    .status-pending { background: #fff8e1; color: #f57f17; }
+    .status-cancelled { background: #ffebee; color: #c62828; }
+    
+    /* Buttons */
+    .btn-view-listing {
+        background: white;
+        border: 1px solid #222;
+        color: #222;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+        font-size: 0.95rem;
+    }
+    .btn-view-listing:hover {
+        background: #f8f9fa;
+        color: #000;
+    }
+    
+    .btn-cancel-booking {
+        background: transparent;
+        border: none;
+        color: #dc3545;
+        font-weight: 600;
+        text-decoration: underline;
+        font-size: 0.95rem;
+        padding: 0;
+        cursor: pointer;
+    }
+    
+    /* Recently Viewed Grid */
+    .recent-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3.5rem;
+    }
+    
+    .recent-card {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .recent-img-wrapper {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 12px;
+        background: #f1f3f5;
+    }
+    
+    .recent-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    
+    .recent-card:hover .recent-img {
+        transform: scale(1.05);
+    }
+    
+    .recent-title {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: #222;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .recent-price {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: #222;
+        margin: 0;
+    }
+    
+    /* Logout */
+    .logout-wrapper {
+        border-top: 1px solid #ebebeb;
+        padding-top: 2rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .btn-logout-premium {
+        background: #222;
+        color: white;
+        padding: 12px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        font-size: 1.05rem;
+    }
+    
+    .btn-logout-premium:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        color: white;
+    }
+</style>
+
+<div class="profile-container">
+
+    <!-- Header Section -->
+    <div class="profile-header-card">
+            <div class="profile-avatar-wrap" style="position: relative;">
+                <% if(user.profileImage && user.profileImage.url) { %>
+                    <img src="<%= user.profileImage.url %>" alt="Profile Image" style="width:140px;height:140px;border-radius:50%;object-fit:cover;box-shadow:0 8px 20px rgba(0,0,0,0.08);">
                 <% } else { %>
-                    <p class="profile-empty">You have no bookings yet. Browse listings to reserve your next stay.</p>
-                <% } %>
-            </div>
-
-            <div class="profile-divider"></div>
-
-            <div class="profile-section">
-                <h4 class="profile-section-title">Recently Viewed Listings</h4>
-                <% if(recentlyViewed.length> 0) { %>
-                    <div class="profile-listings">
-                        <% for(let listing of recentlyViewed) { %>
-                            <a href="/listing/<%= listing._id %>" class="profile-listing-card">
-                                <div class="profile-listing-img-wrapper">
-                                    <img src="<%= listing.image.url %>" alt="<%= listing.title %>"
-                                        class="profile-listing-img">
-                                </div>
-                                <div class="profile-listing-info">
-                                    <p class="profile-listing-title">
-                                        <%= listing.title %>
-                                    </p>
-                                    <p class="profile-listing-price">₹ <%= listing.price.toLocaleString("en-IN") %> /
-                                            night</p>
-                                    <p class="profile-listing-location">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                        <%= listing.location %>, <%= listing.country %>
-                                    </p>
-                                </div>
-                            </a>
-                            <% } %>
+                    <div class="profile-avatar-large">
+                        <%= user.firstName.charAt(0).toUpperCase() %><%= user.lastName.charAt(0).toUpperCase() %>
                     </div>
-                    <% } else { %>
-                        <p class="profile-empty">No recently viewed listings yet. <a href="/listing">Browse listings</a>
-                        </p>
-                        <% } %>
+                <% } %>
+
+                <form action="/profile/photo" method="POST" enctype="multipart/form-data" class="profile-photo-uploader">
+                    <label class="profile-photo-btn">
+                        <i class="fa-solid fa-camera"></i>
+                        <span>Change photo</span>
+                        <input type="file" name="profileImage" accept="image/*" onchange="this.form.submit()" style="display:none;">
+                    </label>
+                </form>
             </div>
-
-            <div class="profile-divider"></div>
-
-            <div class="profile-logout">
-                <a href="/logout" class="profile-logout-btn">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Logout
-                </a>
-            </div>
-
+        <div class="profile-user-info">
+            <h2><%= user.firstName %> <%= user.lastName %></h2>
+            <p><i class="fa-solid fa-at text-muted"></i> <%= user.username %></p>
+            <p><i class="fa-solid fa-envelope text-muted"></i> <%= user.email %></p>
+            <p><i class="fa-solid fa-calendar-check text-muted"></i> Member since <%= user.createdAt.toDateString() %></p>
         </div>
     </div>
+
+    <!-- Bookings Section -->
+    <h3 class="section-title">My Trips</h3>
+    <% if(bookings.length > 0) { %>
+        <div class="bookings-grid">
+            <% for(let booking of bookings) { %>
+                <div class="booking-card-modern">
+                    <div class="booking-details">
+                        <h5><%= booking.listing ? booking.listing.title : 'Listing no longer available' %></h5>
+                        <p><i class="fa-regular fa-calendar text-danger"></i> <%= booking.checkIn.toDateString() %> &rarr; <%= booking.checkOut.toDateString() %></p>
+                        <p><i class="fa-solid fa-user-group text-danger"></i> <%= booking.guests %> guest(s)</p>
+                    </div>
+                    
+                    <div class="booking-actions">
+                        <div class="booking-price-tag">₹<%= booking.totalPrice.toLocaleString("en-IN") %></div>
+                        <div class="status-badge status-<%= booking.status %>"><%= booking.status %></div>
+                        
+                        <div class="d-flex gap-3 mt-3 align-items-center">
+                            <% if(booking.listing) { %>
+                                <a href="/listing/<%= booking.listing._id %>" class="btn-view-listing">View Property</a>
+                            <% } %>
+                            <% if(booking.status !== 'cancelled' && booking.status !== 'completed' ) { %>
+                                <form action="/booking/bookings/<%= booking._id %>/cancel" method="POST" class="m-0">
+                                    <button type="submit" class="btn-cancel-booking">Cancel Trip</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    <% } else { %>
+        <div class="p-5 text-center bg-light rounded-4 mb-5 border" style="background: #f8f9fa;">
+            <h5 class="text-muted mb-3 fw-bold">No trips booked... yet!</h5>
+            <a href="/listing" class="btn btn-dark rounded-5 px-4 py-2 fw-bold" style="background: #222;">Start exploring</a>
+        </div>
+    <% } %>
+
+    <!-- Recently Viewed Section -->
+    <h3 class="section-title">Recently Viewed</h3>
+    <% if(recentlyViewed.length > 0) { %>
+        <div class="recent-grid">
+            <% for(let listing of recentlyViewed) { %>
+                <a href="/listing/<%= listing._id %>" class="recent-card">
+                    <div class="recent-img-wrapper shadow-sm">
+                        <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="recent-img">
+                    </div>
+                    <p class="recent-title"><%= listing.title %></p>
+                    <p class="recent-price">₹<%= listing.price.toLocaleString("en-IN") %> <span class="text-muted fw-normal">night</span></p>
+                </a>
+            <% } %>
+        </div>
+    <% } else { %>
+        <p class="text-muted mb-5 pb-4">No recently viewed listings yet.</p>
+    <% } %>
+
+    <!-- Logout -->
+    <div class="logout-wrapper">
+        <a href="/logout" class="btn-logout-premium">
+            Logout <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </a>
+    </div>
+
+</div>

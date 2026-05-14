@@ -3,6 +3,7 @@ import Listing from '../models/listing.model.js';
 import Booking from '../models/booking.model.js';
 import passport from 'passport';
 import { sendOTPEmail } from '../utils/mailer.js';
+import { cloudinary } from '../utils/cloudinary.js';
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -149,4 +150,42 @@ export const getProfile = async (req, res, next) => {
         recentlyViewed: orderedListings,
         bookings,
     });
+};
+
+export const uploadProfilePic = async (req, res, next) => {
+    try {
+        console.log('profile upload request from user:', req.user && req.user._id);
+        console.log('uploaded file:', req.file);
+        if (!req.file) {
+            req.flash('error', 'No file uploaded');
+            return res.redirect('/profile');
+        }
+
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            req.flash('error', 'User not found');
+            return res.redirect('/profile');
+        }
+
+        // delete previous image from cloudinary
+        if (user.profileImage && user.profileImage.filename) {
+            try { await cloudinary.uploader.destroy(user.profileImage.filename); } catch (e) { }
+        }
+
+        user.profileImage = { url: req.file.path, filename: req.file.filename };
+        await user.save();
+
+        req.login(user, (err) => {
+            if (err) {
+                console.error('req.login error after profile update:', err);
+                req.flash('error', 'Failed to refresh session after upload');
+            } else {
+                req.flash('success', 'Profile picture updated successfully');
+            }
+            return res.redirect('/profile');
+        });
+    } catch (err) {
+        console.error('Error in uploadProfilePic:', err);
+        next(err);
+    }
 };

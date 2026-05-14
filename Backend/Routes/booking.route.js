@@ -16,7 +16,7 @@ router.get("/:id/bookings/new", isLoggedIn, wrapAsync(getBookingForm));
 router.post("/:id/bookings", isLoggedIn, wrapAsync(createBooking));
 router.get("/bookings", isLoggedIn, wrapAsync(getMyBookings));
 router.get("/bookings/:bookingId", isLoggedIn, wrapAsync(getBookingById));
-router.put("/bookings/:bookingId/cancel", isLoggedIn, wrapAsync(cancelBooking));
+router.post("/bookings/:bookingId/cancel", isLoggedIn, wrapAsync(cancelBooking));
 router.delete("/bookings/:bookingId", isLoggedIn, wrapAsync(deleteBooking));
 
 export default router;

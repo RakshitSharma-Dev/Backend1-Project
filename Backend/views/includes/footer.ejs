@@ -1,19 +1,84 @@
-<footer>
-    <div class="f-info">
-        <div class="f-info-social">
-            <a href="https://www.facebook.com/om.kamboj.9" target="_blank"><i
-                    class="fa-brands fa-square-facebook"></i></a>
-            <a href="https://www.instagram.com/ketan._.shxrma/" target="_blank"><i
-                    class="fa-brands fa-square-instagram"></i></a>
-            <a href="https://www.linkedin.com/in/om-kamboj-09/" target="_blank"><i
-                    class="fa-brands fa-linkedin"></i></a>
+<style>
+    /* Premium Footer Styles */
+    .sexy-footer {
+        background-color: #f7f7f7;
+        border-top: 1px solid #dddddd;
+        padding: 40px 0 20px 0;
+        color: #222222;
+        font-family: inherit;
+        margin-top: auto;
+    }
+
+    .sexy-footer-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    @media (min-width: 768px) {
+        .sexy-footer-bottom {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+
+    .sexy-footer-copy {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        font-size: 0.9rem;
+        color: #495057;
+    }
+
+    .sexy-footer-copy a {
+        color: #495057;
+        text-decoration: none;
+    }
+
+    .sexy-footer-copy a:hover {
+        text-decoration: underline;
+        color: #222;
+    }
+
+    .sexy-footer-social {
+        display: flex;
+        gap: 15px;
+        font-size: 1.2rem;
+    }
+
+    .sexy-footer-social a {
+        color: #222;
+        transition: color 0.2s, transform 0.2s;
+    }
+
+    .sexy-footer-social a:hover {
+        color: #ff385c;
+        transform: translateY(-2px);
+    }
+</style>
+
+<footer class="sexy-footer">
+    <div class="container-fluid px-4 px-md-5" style="max-width: 1200px; margin: auto;">
+        
+        <!-- Bottom Bar -->
+        <div class="sexy-footer-bottom">
+            <div class="sexy-footer-copy">
+                <span>&copy; 2026 HotSpot Private Limited</span>
+                <span class="d-none d-sm-inline">·</span>
+                <a href="/privacy">Privacy</a>
+                <span class="d-none d-sm-inline">·</span>
+                <a href="/terms">Terms</a>
+            </div>
+            
+            <div class="sexy-footer-social">
+                <a href="https://www.facebook.com/om.kamboj.9" target="_blank"><i class="fa-brands fa-square-facebook"></i></a>
+                <a href="https://www.instagram.com/ketan._.shxrma/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/om-kamboj-09/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
         </div>
-        <div>
-            &copy; HotSpot Private Limited
-        </div>
-        <div class="f-info-links">
-            <a href="/privacy">Privacy</a>
-            <a href="/terms">Terms</a>
-        </div>
+
     </div>
 </footer>

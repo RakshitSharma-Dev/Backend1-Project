@@ -1,54 +1,273 @@
-<nav class="navbar navbar-expand-md border-bottom sticky-top">
+<style>
+    /* Premium Navbar Styles */
+    .sexy-navbar {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        transition: all 0.3s ease;
+        z-index: 1050;
+    }
+
+    .sexy-brand {
+        background: linear-gradient(135deg, #ff385c, #d70466);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 900;
+        font-size: 1.5rem;
+        letter-spacing: -0.5px;
+    }
+
+    .sexy-brand-icon {
+        color: #ff385c;
+        font-size: 1.8rem;
+        filter: drop-shadow(0 2px 4px rgba(255, 56, 92, 0.3));
+    }
+
+    .sexy-search-wrapper {
+        background: #f1f3f5;
+        border-radius: 50px;
+        padding: 4px 4px 4px 20px;
+        display: flex;
+        align-items: center;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .sexy-search-wrapper:focus-within {
+        background: #fff;
+        border-color: #ff385c;
+        box-shadow: 0 0 0 4px rgba(255, 56, 92, 0.1);
+    }
+
+    .sexy-search-input {
+        border: none;
+        background: transparent;
+        outline: none;
+        width: 250px;
+        font-weight: 500;
+        color: #333;
+    }
+
+    .sexy-search-input::placeholder {
+        color: #adb5bd;
+        font-weight: 400;
+    }
+
+    .sexy-search-btn {
+        background: linear-gradient(135deg, #ff385c, #d70466);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 8px 24px;
+        font-weight: 600;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sexy-search-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(255, 56, 92, 0.35);
+    }
+
+    .sexy-nav-link {
+        font-weight: 600;
+        color: #495057 !important;
+        padding: 8px 16px !important;
+        border-radius: 50px;
+        transition: all 0.2s ease;
+    }
+
+    .sexy-nav-link:hover {
+        background: rgba(0, 0, 0, 0.04);
+        color: #111 !important;
+    }
+
+    .sexy-user-menu {
+        border: 1px solid #dee2e6;
+        border-radius: 50px;
+        padding: 6px 6px 6px 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        background: white;
+    }
+
+    .sexy-user-menu:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border-color: #ccc;
+    }
+
+    .sexy-avatar {
+        background: #343a40;
+        color: white;
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    .sexy-alert {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        font-weight: 500;
+        position: fixed;
+        top: 90px;
+        right: 20px;
+        z-index: 1060;
+        min-width: 300px;
+        animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .dropdown-menu {
+        animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<nav class="navbar navbar-expand-md sticky-top sexy-navbar py-2">
     <div class="container-fluid px-4">
+        <!-- Brand -->
         <a class="navbar-brand d-flex align-items-center gap-2" href="/">
-            <i class="fa-regular fa-compass"></i>
-            <span class="brand-name">Hotspot</span>
+            <i class="fa-regular fa-compass sexy-brand-icon"></i>
+            <span class="sexy-brand">Hotspot</span>
         </a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarNavAltMarkup">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+
+            <!-- Search Bar -->
             <% if(typeof search !=='undefined' ) { %>
-                <form action="/listing" method="GET" class="navbar-search mx-auto">
-                    <div class="search-wrapper">
-                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <input type="text" name="search" value="<%= search %>" placeholder="Search listings..."
-                            class="search-input">
-                        <button type="submit" class="search-btn">Search</button>
+                <form action="/listing" method="GET" class="mx-auto my-3 my-md-0">
+                    <div class="sexy-search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass text-muted me-2"></i>
+                        <input type="text" name="search" value="<%= search %>" placeholder="Explore destinations..."
+                            class="sexy-search-input">
+                        <button type="submit" class="sexy-search-btn">Search</button>
                     </div>
                 </form>
-                <% } %>
+                <% } else { %>
+                    <div class="mx-auto"></div>
+                    <% } %>
 
-                    <div class="navbar-nav ms-auto align-items-center gap-1">
-                        <a class="nav-link" href="/">Home</a>
-                        <a class="nav-link" href="/listing">All Listings</a>
-                        <a class="nav-link" href="/listing/new">Create Listing</a>
-                        <% if(!currentUser) { %>
-                            <a class="nav-link" href="/login">Login</a>
-                            <a class="nav-link nav-register-btn" href="/register">Register</a>
-                            <% } else { %>
-                                <a href="/profile" class="nav-username">
-                                    <i class="fa-regular fa-circle-user"></i>
-                                    <%= currentUser.firstName %>
-                                </a>
-                                <% } %>
-                    </div>
+                        <!-- Right Links & User Menu -->
+                        <div class="navbar-nav align-items-center gap-2">
+                            <a class="nav-link sexy-nav-link d-none d-lg-block" href="/">Home</a>
+                            <a class="nav-link sexy-nav-link d-none d-lg-block" href="/listing">Explore</a>
+
+
+
+                            <a class="nav-link sexy-nav-link fw-bold" href="/listing/new"
+                                style="color: #ff385c !important;">Create Listing</a>
+
+                            <div class="dropdown ms-2 mt-2 mt-md-0">
+                                <div class="sexy-user-menu" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-bars text-muted fs-5"></i>
+                                    <% if(typeof currentUser !=='undefined' && currentUser) { %>
+                                        <div class="sexy-avatar"
+                                            style="background: linear-gradient(135deg, #ff385c, #d70466);">
+                                            <%= currentUser.firstName.charAt(0).toUpperCase() %>
+                                        </div>
+                                        <% } else { %>
+                                            <div class="sexy-avatar bg-secondary">
+                                                <i class="fa-solid fa-user"></i>
+                                            </div>
+                                            <% } %>
+                                </div>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-3 rounded-4 py-3"
+                                    style="min-width: 260px;">
+                                    <% if(typeof currentUser==='undefined' || !currentUser) { %>
+                                        <li><a class="dropdown-item fw-bold py-2 px-4" href="/register">Sign up</a></li>
+                                        <li><a class="dropdown-item py-2 px-4" href="/login">Log in</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider my-2">
+                                        </li>
+                                        <li><a class="dropdown-item py-2 px-4" href="/profile">My Profile</a></li>
+                                        <li><a class="dropdown-item py-2 px-4" href="/listing">Explore all listings</a>
+                                        </li>
+                                        <% } else { %>
+                                            <li>
+                                                <div class="dropdown-item fw-bold text-muted px-4"
+                                                    style="font-size: 0.85rem;">Welcome, <%= currentUser.firstName %>
+                                                </div>
+                                            </li>
+                                            <li><a class="dropdown-item fw-bold py-2 px-4" href="/profile">My
+                                                    Profile</a></li>
+                                            <li><a class="dropdown-item py-2 px-4" href="/listing">All Listings</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider my-2">
+                                            </li>
+                                            <li><a class="dropdown-item py-2 px-4" href="/listing/new">Create
+                                                    Listing</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider my-2">
+                                            </li>
+                                            <li><a class="dropdown-item py-2 px-4 text-danger fw-bold"
+                                                    href="/logout">Log out</a></li>
+                                            <% } %>
+                                </ul>
+                            </div>
+                        </div>
         </div>
     </div>
 </nav>
 
-<% if(success && success.length> 0) { %>
-    <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
-        <%= success %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    <% } %>
-
-        <% if(error && error.length> 0) { %>
-            <div class="alert alert-danger alert-dismissible fade show mb-0" role="alert">
-                <%= error %>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<!-- Alerts (Toast Style) -->
+<div>
+    <% if(success && success.length> 0) { %>
+        <div class="alert alert-success alert-dismissible fade show sexy-alert d-flex align-items-center gap-3"
+            role="alert" style="background: #e8f5e9; color: #2e7d32; border-left: 5px solid #4caf50;">
+            <i class="fa-solid fa-circle-check fs-4"></i>
+            <div>
+                <%= success %>
             </div>
-            <% } %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <% } %>
+
+            <% if(error && error.length> 0) { %>
+                <div class="alert alert-danger alert-dismissible fade show sexy-alert d-flex align-items-center gap-3"
+                    role="alert" style="background: #ffebee; color: #c62828; border-left: 5px solid #f44336;">
+                    <i class="fa-solid fa-circle-exclamation fs-4"></i>
+                    <div>
+                        <%= error %>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                <% } %>
+</div>

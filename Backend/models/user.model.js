@@ -31,6 +31,14 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    profileImage: {
+        url: {
+            type: String,
+        },
+        filename: {
+            type: String,
+        }
+    }
 }, { timestamps: true });
 
 userSchema.plugin(passportLocalMongoose);
